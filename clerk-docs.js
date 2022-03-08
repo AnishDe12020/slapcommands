@@ -2,18 +2,15 @@ const docItems = [
   {
     title:
       "Components → Control Components → Authenticate With Redirect Callback",
-    websitePath:
-      "https://docs.clerk.dev/components/control-components/authenticate-with-redirect-callback",
+    url: "https://docs.clerk.dev/components/control-components/authenticate-with-redirect-callback",
   },
   {
     title: "Components → Control Components → Clerk Loaded",
-    websitePath:
-      "https://docs.clerk.dev/components/control-components/clerk-loaded",
+    url: "https://docs.clerk.dev/components/control-components/clerk-loaded",
   },
   {
     title: "Components → Control Components → Clerk Loading",
-    websitePath:
-      "https://docs.clerk.dev/components/control-components/clerk-loading",
+    url: "https://docs.clerk.dev/components/control-components/clerk-loading",
   },
   {
     title: "Components → Customization",
