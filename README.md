@@ -31,4 +31,4 @@ Now click "Create Command" and you are ready to go! To use the command simple ty
 
 All contributions welcome :)
 
-![Hits](https://hits.link/hits?url=https%3A%2F%2Fgithub.com%2FAnishDe12020%2Fslapdash_commands)
+<img src="https://hits.link/hits?url=https%3A%2F%2Fgithub.com%2FAnishDe12020%2Fslapcommands" />
