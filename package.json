@@ -1,0 +1,12 @@
+{
+  "name": "slapdash_commands",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:AnishDe12020/slapdash_commands.git",
+  "author": "AnishDe12020 <63192115+AnishDe12020@users.noreply.github.com>",
+  "license": "MIT",
+  "entrypoint": "src/cloud/index.js",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
