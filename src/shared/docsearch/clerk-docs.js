@@ -5,6 +5,7 @@ module.exports = {
     type: "list",
     options: clerkDocsItems.map((item) => ({
       title: item.title,
+      subtitle: item.subtitle,
       action: {
         type: "open-url",
         url: item.url,
