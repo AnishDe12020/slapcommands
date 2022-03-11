@@ -74,6 +74,18 @@ const data: IData[] = [
       },
     ],
   },
+  {
+    repoUrl: "https://github.com/slapdash/platform.git",
+    targetPath: "./tmp/slapdash-platform-docs",
+    fileName: "slapdash-platform-docs.json",
+    baseWebsiteUrl: "https://platform.slapdash.com/",
+    docs: [
+      {
+        docsPath: "docs/",
+        baseWebsitePath: "",
+      },
+    ],
+  },
 ];
 
 const excludeFilenames = ["readme", "summary"];

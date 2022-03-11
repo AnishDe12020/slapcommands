@@ -19,9 +19,14 @@ const clerkDocs = (_, res) => {
   res.json(clerkResponse);
 };
 
+const slapdashPlatformDocs = (_, res) => {
+  res.json(slapdashPlatformResponse);
+};
+
 module.exports = {
   tailwindCSSDocs,
   chakraUIDocs,
   nextJSdocs,
   clerkDocs,
+  slapdashPlatformDocs,
 };
