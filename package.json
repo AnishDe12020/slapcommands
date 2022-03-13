@@ -7,7 +7,7 @@
   "license": "MIT",
   "entrypoint": "src/cloud/index.js",
   "scripts": {
-    "scrape:docs": "ts-node src/scraper/docs.ts"
+    "scrape:docs": "ts-node src/scraper/docs/github.ts"
   },
   "dependencies": {
     "@types/glob": "^7.2.0",
