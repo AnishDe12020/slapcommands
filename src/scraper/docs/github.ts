@@ -81,8 +81,32 @@ const data: IData[] = [
     baseWebsiteUrl: "https://platform.slapdash.com/",
     docs: [
       {
-        docsPath: "docs/",
+        docsPath: "docs/source/",
         baseWebsitePath: "",
+      },
+    ],
+  },
+  {
+    repoUrl: "https://github.com/apollographql/apollo",
+    targetPath: "./tmp/apollo-docs",
+    fileName: "apollo-docs.json",
+    baseWebsiteUrl: "https://www.apollographql.com/",
+    docs: [
+      {
+        docsPath: "docs/",
+        baseWebsitePath: "docs/",
+      },
+    ],
+  },
+  {
+    repoUrl: "https://github.com/apollographql/apollo-client",
+    targetPath: "./tmp/apollo-client-docs",
+    fileName: "apollo-client-docs.json",
+    baseWebsiteUrl: "https://www.apollographql.com/",
+    docs: [
+      {
+        docsPath: "docs/source/",
+        baseWebsitePath: "docs/react/",
       },
     ],
   },
