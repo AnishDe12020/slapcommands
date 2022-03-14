@@ -81,7 +81,7 @@ const data: IData[] = [
     baseWebsiteUrl: "https://platform.slapdash.com/",
     docs: [
       {
-        docsPath: "docs/source/",
+        docsPath: "docs/",
         baseWebsitePath: "",
       },
     ],
@@ -93,7 +93,7 @@ const data: IData[] = [
     baseWebsiteUrl: "https://www.apollographql.com/",
     docs: [
       {
-        docsPath: "docs/",
+        docsPath: "docs/source/",
         baseWebsitePath: "docs/",
       },
     ],
