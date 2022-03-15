@@ -10,7 +10,7 @@ module.exports = {
         type: "open-url",
         url: item.url,
       },
-      icon: "/static/favicon/favicon-32x32.png",
+      icon: "https://nextjs.org/static/favicon/favicon-32x32.png",
     })),
   },
 };
