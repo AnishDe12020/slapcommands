@@ -17,7 +17,7 @@ interface IDocsObject {
 
 interface IItemsObject {
   title: string;
-  subtitle: string;
+  subtitle: string | string[];
   url: string;
 }
 
@@ -149,11 +149,9 @@ data.forEach((project) => {
               .join(" ");
           });
 
-          name = nameParts.join(" → ");
-
           items.push({
             title: nameParts[nameParts.length - 1],
-            subtitle: name,
+            subtitle: nameParts,
             url: websitePath,
           });
 
