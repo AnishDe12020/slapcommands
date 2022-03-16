@@ -149,9 +149,11 @@ data.forEach((project) => {
               .join(" ");
           });
 
+          name = nameParts.join(" → ");
+
           items.push({
             title: nameParts[nameParts.length - 1],
-            subtitle: nameParts,
+            subtitle: name,
             url: websitePath,
           });
 
