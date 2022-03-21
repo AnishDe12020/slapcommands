@@ -12,10 +12,11 @@ All of these commands are available as Slapdash cloud commands and can be instal
 | Search Next.js Docs | [Source](https://github.com/AnishDe12020/slapcommands/blob/main/src/shared/docsearch/nextjs-docs.js) | ✅ | ✅| [Install](https://slapdash.com/commands/search-nextjs-docs) |
 | Search Chakra UI Docs | [Source](https://github.com/AnishDe12020/slapcommands/blob/main/src/shared/docsearch/chakra-ui-docs.js) | ✅ | ✅| [Install](https://slapdash.com/commands/search-tailwind-css-docs) |
 | Search Clerk Docs | [Source](https://github.com/AnishDe12020/slapcommands/blob/main/src/shared/docsearch/clerk-docs.js) | ✅ | ✅| [Install](https://slapdash.com/commands/search-clerk-docs) |
-| Search Slapdash Platform Docs | [Source](https://github.com/AnishDe12020/slapcommands/blob/main/src/shared/docsearch/slapdash-platform-docs.js) | ✅ | Coming soon!| Coming soon! |
-| Search Apollo Docs | [Source](https://github.com/AnishDe12020/slapcommands/blob/main/src/shared/docsearch/apollo-docs.js) | ✅ | Coming soon!| Coming soon! |
-| Search Apollo Client Docs | [Source](https://github.com/AnishDe12020/slapcommands/blob/main/src/shared/docsearch/apollo-client-docs.js) | ✅ | Coming soon!| Coming soon! |
-| Unix Timestamp | [Source](https://github.com/AnishDe12020/slapcommands/blob/main/src/shared/utils/unix-timestamp.js) | ✅ | Coming soon!| Coming soon! |
+| Search Slapdash Platform Docs | [Source](https://github.com/AnishDe12020/slapcommands/blob/main/src/shared/docsearch/slapdash-platform-docs.js) | ✅ | ✅ | Coming soon! |
+| Search Apollo Docs | [Source](https://github.com/AnishDe12020/slapcommands/blob/main/src/shared/docsearch/apollo-docs.js) | ✅ | ✅ | Coming soon! |
+| Search Apollo Client Docs | [Source](https://github.com/AnishDe12020/slapcommands/blob/main/src/shared/docsearch/apollo-client-docs.js) | ✅ | ✅ | Coming soon! |
+| Unix Timestamp | [Source](https://github.com/AnishDe12020/slapcommands/blob/main/src/shared/utils/unix-timestamp.js) | ✅ | ✅ | Coming soon! |
+| Search Emojis | [Source](https://github.com/AnishDe12020/slapcommands/blob/main/src/shared/utils/emoji-paster.js) | ✅ | ✅ | Coming soon! |
 
 
 ## How to use them as a local command?
