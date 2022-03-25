@@ -15,7 +15,7 @@ const rootResponse = (query) => {
   }
 
   return {
-    inputPlaceholder: "Type to search NPM packages",
+    inputPlaceholder: "Type to search emojis",
     view: {
       type: "list",
       ranking: false,
