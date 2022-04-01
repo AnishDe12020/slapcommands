@@ -6,7 +6,7 @@ import { glob } from "glob";
 const log = console.log;
 
 const info = (msg: string): void => {
-  log(chalk.white(msg));
+  log(chalk.blue(msg));
 };
 
 const error = (msg: string): void => {
@@ -81,7 +81,18 @@ const data: IData[] = [
   },
 ];
 
-const cloneRepo = async (repoUrl: string, targetPath: string) => {
+const alreadyCloned = (targetPath: string): boolean => {
+  return glob.sync(targetPath).length > 0;
+};
+
+const cloneRepo = async (
+  repoUrl: string,
+  targetPath: string
+): Promise<void> => {
+  if (alreadyCloned(targetPath)) {
+    success(`${repoUrl} has already been cloned`);
+    return;
+  }
   await loading(
     clone(repoUrl, targetPath),
     `Cloning repo with url ${repoUrl} to ${targetPath}`,
@@ -103,10 +114,11 @@ const main = async () => {
         const { docsPathAddition } = repo;
         const paths = glob.sync(
           `${targetPath}/${
-            repoDocsPathAddition ? `#{repoDocsPathAddition}/` : ""
-          }${docsPathAddition ? `#{docsPathAddition}/` : ""}**/*.md`
+            repoDocsPathAddition ? `${repoDocsPathAddition}/` : ""
+          }${docsPathAddition ? `${docsPathAddition}/` : ""}**/*.md`
         );
         console.log(paths);
+        success(`${paths.length} files found`);
       });
     });
   });
