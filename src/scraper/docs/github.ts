@@ -188,6 +188,22 @@ const data: IData[] = [
       },
     ],
   },
+  {
+    targetPath: "./tmp/clerk-docs",
+    fileName: "clerk-docs.json",
+    baseWebsiteUrl: "https://docs.clerk.dev/",
+    repos: [
+      {
+        repoUrl: "https://github.com/clerkinc/docs.git",
+        docs: [
+          {
+            docsPathAddition: "",
+            baseWebsitePathAddition: "",
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 const alreadyCloned = (targetPath: string): boolean => {
