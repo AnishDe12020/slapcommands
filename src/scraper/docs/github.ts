@@ -1,18 +1,59 @@
-import glob from "glob";
 import clone from "git-clone/promise";
-import fs from "fs";
+import chalk from "chalk";
+import ora, { Ora, promise as oraPromise } from "ora";
+import { glob } from "glob";
+
+const log = console.log;
+
+const info = (msg: string): void => {
+  log(chalk.white(msg));
+};
+
+const error = (msg: string): void => {
+  log(chalk.red(msg));
+};
+
+const success = (msg: string): void => {
+  log(chalk.green(msg));
+};
+
+const loading = async (
+  action: Promise<any>,
+  loadingText: string = "Loading...",
+  successText: string = "Success!",
+  failText: string = "Failed!"
+): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const spinner = ora(loadingText).start();
+    action
+      .then(() => {
+        spinner.succeed(successText);
+        resolve();
+      })
+      .catch((err) => {
+        spinner.fail(failText);
+        reject(err);
+      });
+  });
+};
 
 interface IData {
-  repoUrl: string;
-  targetPath: string;
   fileName: string;
   baseWebsiteUrl: string;
+  targetPath: string;
+  repos: IRepoObject[];
+}
+
+interface IRepoObject {
+  docsPathAddition?: string;
+  websitePathAddition?: string;
   docs: IDocsObject[];
+  repoUrl: string;
 }
 
 interface IDocsObject {
-  docsPath: string;
-  baseWebsitePath: string;
+  docsPathAddition?: string;
+  baseWebsitePathAddition?: string;
 }
 
 interface IItemsObject {
@@ -23,151 +64,52 @@ interface IItemsObject {
 
 const data: IData[] = [
   {
-    repoUrl: "https://github.com/vercel/next.js.git",
-    targetPath: "./tmp/nextjs",
-    fileName: "nextjs-docs.json",
-    baseWebsiteUrl: "https://nextjs.org/",
-    docs: [
-      {
-        docsPath: "docs/",
-        baseWebsitePath: "docs/",
-      },
-    ],
-  },
-  {
-    repoUrl: "https://github.com/tailwindlabs/tailwindcss.com.git",
-    targetPath: "./tmp/tailwindcss-docs",
-    fileName: "tailwind-css-docs.json",
-    baseWebsiteUrl: "https://tailwindcss.com/",
-    docs: [
-      {
-        docsPath: "src/pages/docs/",
-        baseWebsitePath: "docs/",
-      },
-    ],
-  },
-  {
-    repoUrl: "https://github.com/chakra-ui/chakra-ui-docs.git",
-    targetPath: "./tmp/chakra-ui-docs",
-    fileName: "chakra-ui-docs.json",
-    baseWebsiteUrl: "https://chakra-ui.com/",
-    docs: [
-      {
-        docsPath: "pages/docs/",
-        baseWebsitePath: "docs/",
-      },
-      {
-        docsPath: "pages/guides/",
-        baseWebsitePath: "guides/",
-      },
-    ],
-  },
-  {
-    repoUrl: "https://github.com/clerkinc/docs.git",
-    targetPath: "./tmp/clerk-docs",
-    fileName: "clerk-docs.json",
-    baseWebsiteUrl: "https://docs.clerk.dev/",
-    docs: [
-      {
-        docsPath: "",
-        baseWebsitePath: "",
-      },
-    ],
-  },
-  {
-    repoUrl: "https://github.com/slapdash/platform.git",
-    targetPath: "./tmp/slapdash-platform-docs",
-    fileName: "slapdash-platform-docs.json",
-    baseWebsiteUrl: "https://platform.slapdash.com/",
-    docs: [
-      {
-        docsPath: "docs/",
-        baseWebsitePath: "",
-      },
-    ],
-  },
-  {
-    repoUrl: "https://github.com/apollographql/apollo",
     targetPath: "./tmp/apollo-docs",
     fileName: "apollo-docs.json",
     baseWebsiteUrl: "https://www.apollographql.com/",
-    docs: [
+    repos: [
       {
-        docsPath: "docs/source/",
-        baseWebsitePath: "docs/",
-      },
-    ],
-  },
-  {
-    repoUrl: "https://github.com/apollographql/apollo-client",
-    targetPath: "./tmp/apollo-client-docs",
-    fileName: "apollo-client-docs.json",
-    baseWebsiteUrl: "https://www.apollographql.com/",
-    docs: [
-      {
-        docsPath: "docs/source/",
-        baseWebsitePath: "docs/react/",
+        repoUrl: "https://github.com/apollographql/apollo",
+        docs: [
+          {
+            docsPathAddition: "docs/source/",
+            baseWebsitePathAddition: "docs/",
+          },
+        ],
       },
     ],
   },
 ];
 
-const excludeFilenames = ["readme", "summary"];
+const cloneRepo = async (repoUrl: string, targetPath: string) => {
+  await loading(
+    clone(repoUrl, targetPath),
+    `Cloning repo with url ${repoUrl} to ${targetPath}`,
+    `Cloned repo with url ${repoUrl} to ${targetPath}`,
+    `Failed to clone repo with url ${repoUrl} to ${targetPath}`
+  );
+};
 
-data.forEach((project) => {
-  let items: IItemsObject[] = [];
-  clone(project.repoUrl, project.targetPath, { shallow: true })
-    .then(() => {
-      project.docs.forEach((doc) => {
+const main = async () => {
+  info("Starting...");
+
+  data.map(async (project) => {
+    const { targetPath, repos } = project;
+
+    repos.map(async (repo) => {
+      const { repoUrl, docsPathAddition: repoDocsPathAddition } = repo;
+      await cloneRepo(repoUrl, targetPath);
+      repo.docs.map(async (doc) => {
+        const { docsPathAddition } = repo;
         const paths = glob.sync(
-          `${project.targetPath}/${doc.docsPath}/**/*.{md,mdx}`
+          `${targetPath}/${
+            repoDocsPathAddition ? `#{repoDocsPathAddition}/` : ""
+          }${docsPathAddition ? `#{docsPathAddition}/` : ""}**/*.md`
         );
-
-        paths.forEach((path) => {
-          let name = path.replace(`${project.targetPath}/${doc.docsPath}`, "");
-          name = name.replace(/\.(md|mdx)$/g, "");
-          console.log(name);
-
-          if (
-            excludeFilenames.some((excludeFilename) =>
-              name.toLowerCase().includes(excludeFilename)
-            )
-          ) {
-            return;
-          }
-
-          let websitePath = `${project.baseWebsiteUrl}${doc.baseWebsitePath}${name}`;
-          console.log(websitePath);
-
-          let nameParts = name.split("/");
-          nameParts = nameParts.map((part) => {
-            return part
-              .split("-")
-              .map((word) => {
-                return word.charAt(0).toUpperCase() + word.slice(1);
-              })
-              .join(" ");
-          });
-
-          name = nameParts.join(" → ");
-
-          items.push({
-            title: nameParts[nameParts.length - 1],
-            subtitle: name,
-            url: websitePath,
-          });
-
-          console.log(items);
-        });
+        console.log(paths);
       });
-
-      fs.writeFileSync(
-        `./src/data/docsearch/${project.fileName}`,
-        JSON.stringify(items)
-      );
-      console.log("Wrote file " + project.fileName);
-    })
-    .catch((err) => {
-      console.error(err);
     });
-});
+  });
+};
+
+main();
