@@ -136,6 +136,58 @@ const data: IData[] = [
       },
     ],
   },
+  {
+    targetPath: "./tmp/nextjs",
+    fileName: "nextjs-docs.json",
+    baseWebsiteUrl: "https://nextjs.org/",
+    repos: [
+      {
+        repoUrl: "https://github.com/vercel/next.js.git",
+        docs: [
+          {
+            docsPathAddition: "docs/",
+            baseWebsitePathAddition: "docs/",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    targetPath: "./tmp/tailwindcss-docs",
+    fileName: "tailwind-css-docs.json",
+    baseWebsiteUrl: "https://tailwindcss.com/",
+    repos: [
+      {
+        repoUrl: "https://github.com/tailwindlabs/tailwindcss.com.git",
+        docs: [
+          {
+            docsPathAddition: "src/pages/docs/",
+            baseWebsitePathAddition: "docs/",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    targetPath: "./tmp/chakra-ui-docs",
+    fileName: "chakra-ui-docs.json",
+    baseWebsiteUrl: "https://chakra-ui.com/",
+    repos: [
+      {
+        repoUrl: "https://github.com/chakra-ui/chakra-ui-docs.git",
+        docs: [
+          {
+            docsPathAddition: "pages/docs/",
+            baseWebsitePathAddition: "docs/",
+          },
+          {
+            docsPathAddition: "pages/guides/",
+            baseWebsitePathAddition: "guides/",
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 const alreadyCloned = (targetPath: string): boolean => {
@@ -151,7 +203,7 @@ const cloneRepo = async (
     return;
   }
   await loading(
-    clone(repoUrl, targetPath),
+    clone(repoUrl, targetPath, { shallow: true }),
     `Cloning repo with url ${repoUrl} to ${targetPath}`,
     `Cloned repo with url ${repoUrl} to ${targetPath}`,
     `Failed to clone repo with url ${repoUrl} to ${targetPath}`
@@ -175,12 +227,12 @@ const main = async () => {
             const paths = glob.sync(
               `${targetPath}/${
                 repoDocsPathAddition ? `${repoDocsPathAddition}` : ""
-              }${docsPathAddition ? `${docsPathAddition}` : ""}**/*.md`
+              }${docsPathAddition ? `${docsPathAddition}` : ""}**/*.{md,mdx}`
             );
             info(
               `${targetPath}/${
                 repoDocsPathAddition ? `${repoDocsPathAddition}` : ""
-              }${docsPathAddition ? `${docsPathAddition}` : ""}**/*.md`
+              }${docsPathAddition ? `${docsPathAddition}` : ""}**/*.{md,mdx}`
             );
             info(`${paths.length} files found`);
 
