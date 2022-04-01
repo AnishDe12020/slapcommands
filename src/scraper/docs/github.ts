@@ -2,7 +2,7 @@ import clone from "git-clone/promise";
 import chalk from "chalk";
 import ora from "ora";
 import { glob } from "glob";
-import { readFile } from "fs";
+import { readFile, writeFileSync } from "fs";
 import fm from "front-matter";
 
 const log = console.log;
@@ -165,104 +165,120 @@ const main = async () => {
     const { targetPath, repos } = project;
     const items: IItemsObject[] = [];
 
-    repos.map(async (repo) => {
-      const { repoUrl, docsPathAddition: repoDocsPathAddition } = repo;
-      await cloneRepo(repoUrl, targetPath);
-      repo.docs.map(async (doc) => {
-        const { docsPathAddition } = doc;
-        const paths = glob.sync(
-          `${targetPath}/${
-            repoDocsPathAddition ? `${repoDocsPathAddition}` : ""
-          }${docsPathAddition ? `${docsPathAddition}` : ""}**/*.md`
-        );
-        info(
-          `${targetPath}/${
-            repoDocsPathAddition ? `${repoDocsPathAddition}` : ""
-          }${docsPathAddition ? `${docsPathAddition}` : ""}**/*.md`
-        );
-        info(`${paths.length} files found`);
-
-        paths.map((path) => {
-          const { pathReplacements, titleOverrides, subtitleOverrides } = repo;
-
-          readFile(path, "utf8", (err, data) => {
-            if (err) {
-              error(err.message);
-              return;
-            }
-
-            const content = fm(data);
-            title = (content.attributes as any).title;
-          });
-
-          if (pathReplacements) {
-            pathReplacements.map((pathReplacement) => {
-              if (path.match(pathReplacement.dirPath)) {
-                path = path.replace(
-                  pathReplacement.dirPath,
-                  pathReplacement.websitePath
-                );
-                return;
-              }
-            });
-          }
-          let name: string;
-          let title: string = "";
-
-          name = path
-            .replace(
+    await Promise.all(
+      repos.map(async (repo) => {
+        const { repoUrl, docsPathAddition: repoDocsPathAddition } = repo;
+        await cloneRepo(repoUrl, targetPath);
+        await Promise.all(
+          repo.docs.map(async (doc) => {
+            const { docsPathAddition } = doc;
+            const paths = glob.sync(
               `${targetPath}/${
                 repoDocsPathAddition ? `${repoDocsPathAddition}` : ""
-              }${docsPathAddition ? `${docsPathAddition}` : ""}`,
-              ""
-            )
-            .replace(/\.(md|mdx)$/g, "");
+              }${docsPathAddition ? `${docsPathAddition}` : ""}**/*.md`
+            );
+            info(
+              `${targetPath}/${
+                repoDocsPathAddition ? `${repoDocsPathAddition}` : ""
+              }${docsPathAddition ? `${docsPathAddition}` : ""}**/*.md`
+            );
+            info(`${paths.length} files found`);
 
-          let nameParts = name.split("/");
+            paths.map((path) => {
+              const { pathReplacements, titleOverrides, subtitleOverrides } =
+                repo;
 
-          nameParts = nameParts.map((part) => {
-            return part
-              .split("-")
-              .map((word) => {
-                return word.charAt(0).toUpperCase() + word.slice(1);
-              })
-              .join(" ");
-          });
+              readFile(path, "utf8", (err, data) => {
+                if (err) {
+                  error(err.message);
+                  return;
+                }
 
-          if (!title) {
-            title = nameParts[nameParts.length - 1];
-          }
+                const content = fm(data);
+                title = (content.attributes as any).title;
+              });
 
-          if (titleOverrides) {
-            titleOverrides.map((titleOverride) => {
-              if (title === titleOverride.oldTitle) {
-                title = titleOverride.newTitle;
-                return;
+              if (pathReplacements) {
+                pathReplacements.map((pathReplacement) => {
+                  if (path.match(pathReplacement.dirPath)) {
+                    path = path.replace(
+                      pathReplacement.dirPath,
+                      pathReplacement.websitePath
+                    );
+                    return;
+                  }
+                });
               }
-            });
-          }
+              let name: string;
+              let title: string = "";
 
-          const url = `${project.baseWebsiteUrl}${
-            repo.websitePathAddition ? `${repo.websitePathAddition}/` : ""
-          }${
-            doc.baseWebsitePathAddition ? `${doc.baseWebsitePathAddition}/` : ""
-          }${name}`;
+              name = path
+                .replace(
+                  `${targetPath}/${
+                    repoDocsPathAddition ? `${repoDocsPathAddition}` : ""
+                  }${docsPathAddition ? `${docsPathAddition}` : ""}`,
+                  ""
+                )
+                .replace(/\.(md|mdx)$/g, "");
 
-          let subtitle = nameParts.join(" → ");
+              let nameParts = name.split("/");
 
-          if (subtitleOverrides) {
-            subtitleOverrides.map((subtitleOverride) => {
-              if (subtitle === subtitleOverride.oldSubtitle) {
-                subtitle = subtitleOverride.newSubtitle;
-                return;
+              nameParts = nameParts.map((part) => {
+                return part
+                  .split("-")
+                  .map((word) => {
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                  })
+                  .join(" ");
+              });
+
+              if (!title) {
+                title = nameParts[nameParts.length - 1];
               }
-            });
-          }
 
-          console.log(title, subtitle, url);
-        });
-      });
-    });
+              if (titleOverrides) {
+                titleOverrides.map((titleOverride) => {
+                  if (title === titleOverride.oldTitle) {
+                    title = titleOverride.newTitle;
+                    return;
+                  }
+                });
+              }
+
+              const url = `${project.baseWebsiteUrl}${
+                repo.websitePathAddition ? `${repo.websitePathAddition}` : ""
+              }${
+                doc.baseWebsitePathAddition
+                  ? `${doc.baseWebsitePathAddition}`
+                  : ""
+              }${name}`;
+
+              let subtitle = nameParts.join(" → ");
+
+              if (subtitleOverrides) {
+                subtitleOverrides.map((subtitleOverride) => {
+                  if (subtitle === subtitleOverride.oldSubtitle) {
+                    subtitle = subtitleOverride.newSubtitle;
+                    return;
+                  }
+                });
+              }
+
+              items.push({
+                title,
+                subtitle,
+                url,
+              });
+            });
+          })
+        );
+      })
+    );
+    writeFileSync(
+      `./src/data/docsearch/${project.fileName}`,
+      JSON.stringify(items)
+    );
+    success(`Wrote ${items.length} items to ${project.fileName}`);
   });
 };
 
