@@ -16,6 +16,16 @@ const data: IData[] = [
       },
     ],
   },
+  {
+    fileName: "supabase-docs.json",
+    baseWebsiteUrl: "https://supabase.com/docs/",
+    sitemapUrl: "https://supabase.com/docs/sitemap.xml",
+    docs: [
+      {
+        basePath: "https://supabase.com/docs/",
+      },
+    ],
+  },
 ];
 
 interface IData {
