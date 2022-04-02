@@ -6,7 +6,8 @@
   "author": "AnishDe12020 <63192115+AnishDe12020@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "scrape:docs": "ts-node src/scraper/docs/github.ts"
+    "scrape:docs": "ts-node src/scraper/docs/github.ts",
+    "scrape:sitemap": "ts-node src/scraper/docs/sitemap.ts"
   },
   "dependencies": {
     "@types/glob": "^7.2.0",
@@ -15,7 +16,8 @@
     "git-clone": "^0.2.0",
     "glob": "^7.2.0",
     "lodash": "^4.17.21",
-    "ora": "5.4.1"
+    "ora": "5.4.1",
+    "sitemapper": "^3.2.2"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",
