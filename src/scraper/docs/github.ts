@@ -1,43 +1,8 @@
 import clone from "git-clone/promise";
-import chalk from "chalk";
-import ora from "ora";
 import { glob } from "glob";
 import { readFile, writeFileSync } from "fs";
 import fm from "front-matter";
-
-const log = console.log;
-
-const info = (msg: string): void => {
-  log(chalk.blue(msg));
-};
-
-const error = (msg: string): void => {
-  log(chalk.red(msg));
-};
-
-const success = (msg: string): void => {
-  log(chalk.green(msg));
-};
-
-const loading = async (
-  action: Promise<any>,
-  loadingText: string = "Loading...",
-  successText: string = "Success!",
-  failText: string = "Failed!"
-): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    const spinner = ora(loadingText).start();
-    action
-      .then(() => {
-        spinner.succeed(successText);
-        resolve();
-      })
-      .catch((err) => {
-        spinner.fail(failText);
-        reject(err);
-      });
-  });
-};
+import { info, error, success, loading } from "../../utils/helpers";
 
 interface IData {
   fileName: string;
