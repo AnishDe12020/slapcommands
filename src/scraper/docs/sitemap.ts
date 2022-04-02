@@ -23,6 +23,11 @@ const data: IData[] = [
     docs: [
       {
         basePath: "https://supabase.com/docs/",
+        excludeItems: [
+          "https://supabase.com/docs/",
+          "https://supabase.com/docs/index_old",
+          "https://supabase.com/docs/search",
+        ],
       },
     ],
   },
@@ -37,6 +42,7 @@ interface IData {
 
 interface IDoc {
   basePath: string;
+  excludeItems?: string[];
 }
 
 interface IItemsObject {
@@ -69,10 +75,15 @@ const main = async () => {
     const { sites } = await fetchSitemap(sitemapUrl);
 
     docs.map((doc) => {
-      const { basePath } = doc;
+      const { basePath, excludeItems } = doc;
 
       sites.map((site: string) => {
         if (site.includes(basePath)) {
+          if (excludeItems) {
+            if (excludeItems.includes(site)) {
+              return;
+            }
+          }
           const name = site.replace(basePath, "");
           let nameParts: string[] = name.split("/");
 
