@@ -156,6 +156,8 @@ const data: IData[] = [
   },
 ];
 
+const filesToSkip = ["readme", "summary"];
+
 const alreadyCloned = (targetPath: string): boolean => {
   return glob.sync(targetPath).length > 0;
 };
@@ -261,6 +263,14 @@ const main = async () => {
                     return;
                   }
                 });
+              }
+
+              if (
+                filesToSkip.some((fileToSkip) =>
+                  name.toLowerCase().includes(fileToSkip)
+                )
+              ) {
+                return;
               }
 
               const url = `${project.baseWebsiteUrl}${
