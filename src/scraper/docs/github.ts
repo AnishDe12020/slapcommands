@@ -83,7 +83,7 @@ const data: IData[] = [
           },
           {
             dirPath: "/build-commands/example-",
-            websitePath: "/commands-tutorials/",
+            websitePath: "/command-tutorials/",
           },
         ],
         titleOverrides: [
