@@ -305,12 +305,28 @@ const main = async () => {
     );
 
     const sortedItems = items.sort((a: IItemsObject, b: IItemsObject) => {
-      if (a.depth > b.depth) {
+      const d1 = a.depth;
+      const d2 = b.depth;
+
+      const t1 = a.title.toLowerCase();
+      const t2 = b.title.toLowerCase();
+
+      if (d1 > d2) {
         return 1;
       }
-      if (a.depth < b.depth) {
+
+      if (d1 < d2) {
         return -1;
       }
+
+      if (t1 > t2) {
+        return 1;
+      }
+
+      if (t1 < t2) {
+        return -1;
+      }
+
       return 0;
     });
 
