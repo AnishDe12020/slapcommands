@@ -45,6 +45,7 @@ interface IItemsObject {
   title: string;
   subtitle: string | string[];
   url: string;
+  depth: number;
 }
 
 const data: IData[] = [
@@ -285,15 +286,27 @@ const main = async () => {
                 title,
                 subtitle,
                 url,
+                depth: nameParts.length,
               });
             });
           })
         );
       })
     );
+
+    const sortedItems = items.sort((a: IItemsObject, b: IItemsObject) => {
+      if (a.depth > b.depth) {
+        return 1;
+      }
+      if (a.depth < b.depth) {
+        return -1;
+      }
+      return 0;
+    });
+
     writeFileSync(
       `./src/data/docsearch/${project.fileName}`,
-      JSON.stringify(items)
+      JSON.stringify(sortedItems)
     );
     success(`Wrote ${items.length} items to ${project.fileName}`);
   });
