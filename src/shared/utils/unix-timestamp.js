@@ -5,12 +5,12 @@ module.exports = {
     type: "list",
     options: [
       {
-        title: `Copy timestamp ${timestamp}`,
+        title: `Copy Timestamp`,
         action: {
           type: "copy",
           value: timestamp.toString(),
         },
-        subtitle: new Date().toString(),
+        subtitle: [timestamp.toString(), new Date().toString()],
       },
     ],
   },
